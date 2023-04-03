@@ -1,0 +1,17 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0",
+	"FriendlyName": "UnrealBarbelotUtilities",
+	"Description": "Utilities for Unreal Engine",
+	"Category": "Other",
+	"CreatedBy": "Benoit Arbelot",
+	"CreatedByURL": "www.benoitarbelot.com",
+	"DocsURL": "",
+	"MarketplaceURL": "",
+	"SupportURL": "",
+	"CanContainContent": true,
+	"IsBetaVersion": false,
+	"IsExperimentalVersion": false,
+	"Installed": false
+}
