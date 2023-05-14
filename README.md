@@ -5,8 +5,12 @@ Utilities plugin for Unreal Engine
 
 ### Brownian motion
 
-Blueprint actor component to apply brownian motion on the actor.
+Actor component that apply brownian motion on the owner actor.
 
 ### Movie Render Queue
 
 Presets for the movie render queue.
+
+### Boids (work in progress)
+
+Elements for flock simulation on the CPU or GPU.
