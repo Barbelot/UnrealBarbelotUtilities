@@ -3,7 +3,7 @@
 	"Version": 1,
 	"VersionName": "1.0",
 	"FriendlyName": "Unreal Barbelot Utilities",
-	"Description": "Utilities for Unreal Engine",
+	"Description": "Utilities for Unreal Engine by Benoit Arbelot",
 	"Category": "Other",
 	"CreatedBy": "Benoit Arbelot",
 	"CreatedByURL": "www.benoitarbelot.com",
@@ -13,5 +13,12 @@
 	"CanContainContent": true,
 	"IsBetaVersion": false,
 	"IsExperimentalVersion": false,
-	"Installed": false
+	"Installed": false,
+	"Modules": [
+		{
+			"Name": "UnrealBarbelotUtilities",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		}
+	]
 }
