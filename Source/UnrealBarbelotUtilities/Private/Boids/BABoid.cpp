@@ -2,26 +2,40 @@
 
 
 #include "Boids/BABoid.h"
+#include "Boids/BABoidsManager.h"
+
+#include "Kismet/KismetMathLibrary.h"
 
 // Sets default values
 ABABoid::ABABoid()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
+	StaticRootComponent = CreateDefaultSubobject<USceneComponent>("StaticRootComponent");
+	StaticRootComponent->SetMobility(EComponentMobility::Static);
+	RootComponent = StaticRootComponent;
+
+	MovableRootComponent = CreateDefaultSubobject<USceneComponent>("MovableRootComponent");
+	MovableRootComponent->SetupAttachment(RootComponent);
+	MovableRootComponent->SetMobility(EComponentMobility::Movable);
 }
 
-// Called when the game starts or when spawned
-void ABABoid::BeginPlay()
+void ABABoid::Initialize(FVector SpawnPosition, FRotator SpawnRotation)
 {
-	Super::BeginPlay();
-	
+	if (ensureMsgf(BoidsManager, TEXT("Boids Manager not set. This should never happen."))) {
+		RandomValue = UKismetMathLibrary::RandomFloatInRange(0, 1);
+
+		MovableRootComponent->SetRelativeLocation(SpawnPosition);
+		MovableRootComponent->SetRelativeRotation(SpawnRotation);
+
+		const float StartingSpeed = (BoidsManager->MinSpeed + BoidsManager->MaxSpeed) * 0.5f;
+		Velocity = MovableRootComponent->GetForwardVector() * StartingSpeed;
+	}
 }
 
-// Called every frame
-void ABABoid::Tick(float DeltaTime)
+void ABABoid::UpdateBoid()
 {
-	Super::Tick(DeltaTime);
 
 }
 

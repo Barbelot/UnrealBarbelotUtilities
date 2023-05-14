@@ -20,7 +20,7 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	TArray<ABABoid*> Boids;
+	TArray<TObjectPtr<ABABoid>> Boids;
 
 	void UpdateBoids();
 
@@ -39,6 +39,12 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Boids|Target")
 	AActor* Target;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Boids|Settings")
+	float MinSpeed;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Boids|Settings")
+	float MaxSpeed;
 
 	UFUNCTION(BlueprintCallable, Category = "Boids")
 	void SpawnBoid();

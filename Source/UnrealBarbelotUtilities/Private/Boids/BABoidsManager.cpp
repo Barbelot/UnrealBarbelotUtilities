@@ -39,12 +39,16 @@ void ABABoidsManager::SpawnBoid()
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
+	TObjectPtr<ABABoid> NewBoid = GetWorld()->SpawnActor<ABABoid>(BoidClass, GetActorLocation(), GetActorRotation(), SpawnParams);
+
+	Boids.Add(NewBoid);
+
+	NewBoid->BoidsManager = this;
+
 	const FVector SpawnLocation = GetActorLocation() + UKismetMathLibrary::RandomUnitVector() * UKismetMathLibrary::RandomFloatInRange(0, SpawnRadius);
 	const FRotator SpawnRotation = UKismetMathLibrary::RandomRotator(true);
 
-	ABABoid* NewBoid = GetWorld()->SpawnActor<ABABoid>(BoidClass, SpawnLocation, SpawnRotation, SpawnParams);
-
-	Boids.Add(NewBoid);
+	NewBoid->Initialize(SpawnLocation, SpawnRotation);
 }
 
 void ABABoidsManager::RemoveBoid(int IndexToRemove)
