@@ -1,4 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -59,7 +58,7 @@ public:
 	FVector AvoidanceDirection;
 
 	UPROPERTY(VisibleAnywhere, Category = "Boids")
-	FVector CenterOfFlockmates;
+	FVector FlockCenter;
 
 	UPROPERTY(VisibleAnywhere, Category = "Boids")
 	int NumPerceivedFlockmates;
@@ -70,5 +69,7 @@ public:
 	void Initialize(FVector SpawnPosition, FRotator SpawnRotation);
 
 	UFUNCTION()
-	void UpdateBoid();
+	void UpdateBoid(float DeltaTime);
+
+	FVector SteerTowards(FVector direction);
 };
