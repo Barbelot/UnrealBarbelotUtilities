@@ -16,10 +16,10 @@ ABABoidsManager::ABABoidsManager()
 
 	SpeedMinMax = FVector2D(200, 500);
 	SpeedNoiseIntensity = 0;
-	SpeedNoiseFrequency = 0.1f;
+	SpeedNoiseFrequency = 1.0f;
 
 	DirectionNoiseIntensity = 0;
-	DirectionNoiseFrequency = 0.1f;
+	DirectionNoiseFrequency = 5.0f;
 
 	PerceptionRadius = 0;
 
@@ -58,6 +58,11 @@ void ABABoidsManager::Tick(float DeltaTime)
 
 void ABABoidsManager::SpawnBoid()
 {
+	if(!BoidClass)
+	{
+		return;
+	}
+
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
