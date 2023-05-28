@@ -118,6 +118,9 @@ void ABABoid::UpdateBoid(float DeltaTime)
 
 	//Rotate boid
 	MovableRootComponent->SetWorldRotation(Direction.Rotation());
+
+	//Snap to target
+	MovableRootComponent->SetWorldLocation(FMath::Lerp(MovableRootComponent->GetComponentLocation(), BoidsManager->Target->GetActorLocation(), BoidsManager->SnapToTarget));
 }
 
 FVector ABABoid::SteerTowards(FVector Direction) {

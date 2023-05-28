@@ -26,14 +26,14 @@ public:
 	/*** VARIABLES ***/
 
 	//Component moved by the boid movement
-	UPROPERTY(VisibleAnywhere, Category = "Boids")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Boids")
 	TObjectPtr<USceneComponent> MovableRootComponent;
 
 	//Component not moved by the boid movement
-	UPROPERTY(VisibleAnywhere, Category = "Boids")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Boids")
 	TObjectPtr<USceneComponent> StaticRootComponent;
 
-	UPROPERTY(VisibleAnywhere, Category = "Boids")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Boids")
 	TObjectPtr<ABABoidsManager> BoidsManager;
 
 	//Boid state

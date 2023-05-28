@@ -28,21 +28,21 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Brownian Motion")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Interp, Category="Brownian Motion")
 	bool bEnableMotion;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Brownian Motion")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Interp, Category = "Brownian Motion")
 	FVector Scale;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Brownian Motion")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Interp, Category = "Brownian Motion")
 	float Amplitude;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Brownian Motion")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Interp, Category = "Brownian Motion")
 	float Frequency;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Brownian Motion")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Interp, Category = "Brownian Motion")
 	float TimeOffset;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Brownian Motion")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Interp, Category = "Brownian Motion")
 	FVector PositionOffset;
 };

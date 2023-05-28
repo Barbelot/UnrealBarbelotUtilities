@@ -32,6 +32,7 @@ ABABoidsManager::ABABoidsManager()
 	TargetWeight = 1;
 	TargetCatchupStrength = 0;
 	targetCatchupRadiusMinMax = FVector2D(200, 400);
+	SnapToTarget = 0;
 
 	WindForce = FVector::ZeroVector;
 }
@@ -122,7 +123,10 @@ void ABABoidsManager::UpdateBoids(float DeltaTime)
 						Boids[i]->NumPerceivedFlockmates += 1;
 						Boids[i]->FlockDirection += Boids[j]->MovableRootComponent->GetForwardVector();
 						Boids[i]->FlockCenter += OtherPosition;
-						Boids[i]->AvoidanceDirection -= (Distance / SqrDist);
+
+						if (SqrDist > 0) {
+							Boids[i]->AvoidanceDirection -= (Distance / SqrDist);
+						}
 					}
 				}
 			}
