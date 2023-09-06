@@ -1,4 +1,4 @@
-# Unreal-Barbelot-Utilities
+# Unreal Barbelot Utilities
 
 Utilities plugin for Unreal Engine.
 
