@@ -39,6 +39,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Interp, Category = "Spawn", meta = (ClampMin = "0.0", ClampMax = "1000.0", UIMin = "0.0", UIMax = "1000.0"))
 	float SpawnCount;
 
+	// Target actor attracting boids, useful to avoid boids going too far away.
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Target")
 	AActor* Target;
 

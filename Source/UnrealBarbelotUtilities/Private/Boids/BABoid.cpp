@@ -63,7 +63,6 @@ void ABABoid::UpdateBoid(float DeltaTime)
 		}
 
 		Acceleration = SteerTowards(OffsetToTarget) * TargetWeight;
-
 	}
 
 	//Boid forces
@@ -120,7 +119,9 @@ void ABABoid::UpdateBoid(float DeltaTime)
 	MovableRootComponent->SetWorldRotation(Direction.Rotation());
 
 	//Snap to target
-	MovableRootComponent->SetWorldLocation(FMath::Lerp(MovableRootComponent->GetComponentLocation(), BoidsManager->Target->GetActorLocation(), BoidsManager->SnapToTarget));
+	if (BoidsManager->Target) {
+		MovableRootComponent->SetWorldLocation(FMath::Lerp(MovableRootComponent->GetComponentLocation(), BoidsManager->Target->GetActorLocation(), BoidsManager->SnapToTarget));
+	}
 }
 
 FVector ABABoid::SteerTowards(FVector Direction) {
