@@ -24,7 +24,7 @@ ABABoid::ABABoid()
 	MovableRootComponent->SetMobility(EComponentMobility::Movable);
 }
 
-void ABABoid::Initialize(FVector SpawnPosition, FRotator SpawnRotation)
+void ABABoid::InitializeBoid(FVector SpawnPosition, FRotator SpawnRotation)
 {
 	if (ensureMsgf(BoidsManager, TEXT("Boids Manager not set. This should never happen."))) {
 		RandomValue = UKismetMathLibrary::RandomFloatInRange(0, 1);

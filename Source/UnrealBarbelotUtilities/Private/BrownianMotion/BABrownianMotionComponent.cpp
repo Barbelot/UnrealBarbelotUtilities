@@ -47,8 +47,8 @@ FVector UBABrownianMotionComponent::GetPerlinNoise3D(float Time, float NoiseFreq
 	FVector NoiseValue;
 
 	NoiseValue.X = FMath::PerlinNoise1D(Time * NoiseFrequency);
-	NoiseValue.Y = FMath::PerlinNoise1D((Time + 10.0f) * NoiseFrequency);
-	NoiseValue.Z = FMath::PerlinNoise1D((Time + 30.0f) * NoiseFrequency);
+	NoiseValue.Y = FMath::PerlinNoise1D((Time + 11.0f) * NoiseFrequency);
+	NoiseValue.Z = FMath::PerlinNoise1D((Time + 37.0f) * NoiseFrequency);
 
 	return NoiseValue;
 }

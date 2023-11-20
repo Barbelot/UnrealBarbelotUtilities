@@ -109,5 +109,8 @@ public:
 	void SpawnBoid();
 
 	UFUNCTION(BlueprintCallable, Category = "Boids")
+	void SpawnBoidAtPosition(FVector Position);
+
+	UFUNCTION(BlueprintCallable, Category = "Boids")
 	void RemoveBoid(int IndexToRemove = 0);
 };

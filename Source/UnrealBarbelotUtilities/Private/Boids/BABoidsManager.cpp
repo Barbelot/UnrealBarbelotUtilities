@@ -64,6 +64,18 @@ void ABABoidsManager::SpawnBoid()
 		return;
 	}
 
+	const FVector SpawnLocation = GetActorLocation() + UKismetMathLibrary::RandomUnitVector() * UKismetMathLibrary::RandomFloatInRange(0, SpawnRadius);
+
+	SpawnBoidAtPosition(SpawnLocation);
+}
+
+void ABABoidsManager::SpawnBoidAtPosition(FVector Position)
+{
+	if (!BoidClass)
+	{
+		return;
+	}
+
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
@@ -73,10 +85,9 @@ void ABABoidsManager::SpawnBoid()
 
 	NewBoid->BoidsManager = this;
 
-	const FVector SpawnLocation = GetActorLocation() + UKismetMathLibrary::RandomUnitVector() * UKismetMathLibrary::RandomFloatInRange(0, SpawnRadius);
 	const FRotator SpawnRotation = UKismetMathLibrary::RandomRotator(true);
 
-	NewBoid->Initialize(SpawnLocation, SpawnRotation);
+	NewBoid->InitializeBoid(Position, SpawnRotation);
 }
 
 void ABABoidsManager::RemoveBoid(int IndexToRemove)

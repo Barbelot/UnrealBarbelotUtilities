@@ -28,7 +28,7 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Interp, Category="Brownian Motion")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Interp, Category = "Brownian Motion")
 	bool bEnableMotion;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Interp, Category = "Brownian Motion")
