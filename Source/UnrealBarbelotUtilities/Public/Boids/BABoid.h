@@ -71,5 +71,8 @@ public:
 	UFUNCTION()
 	void UpdateBoid(float DeltaTime);
 
+	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "AfterBoidUpdate"))
+	void AfterBoidUpdate();
+
 	FVector SteerTowards(FVector direction);
 };

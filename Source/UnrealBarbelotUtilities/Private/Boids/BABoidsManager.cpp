@@ -90,9 +90,9 @@ void ABABoidsManager::SpawnBoidAtPosition(FVector Position)
 	NewBoid->InitializeBoid(Position, SpawnRotation);
 }
 
-void ABABoidsManager::RemoveBoid(int IndexToRemove)
+void ABABoidsManager::RemoveBoid(int32 IndexToRemove)
 {
-	if (Boids.Num() > IndexToRemove)
+	if (IndexToRemove >= 0 && Boids.Num() > IndexToRemove)
 	{
 		Boids[IndexToRemove]->Destroy();
 		Boids.RemoveAt(IndexToRemove);

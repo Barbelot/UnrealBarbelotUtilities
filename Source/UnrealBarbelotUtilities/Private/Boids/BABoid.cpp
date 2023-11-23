@@ -122,6 +122,9 @@ void ABABoid::UpdateBoid(float DeltaTime)
 	if (BoidsManager->Target) {
 		MovableRootComponent->SetWorldLocation(FMath::Lerp(MovableRootComponent->GetComponentLocation(), BoidsManager->Target->GetActorLocation(), BoidsManager->SnapToTarget));
 	}
+
+	//AfterBoidUpdate event call
+	AfterBoidUpdate();
 }
 
 FVector ABABoid::SteerTowards(FVector Direction) {
