@@ -10,10 +10,11 @@ UBABrownianMotionComponent::UBABrownianMotionComponent()
 
 	// Default values
 	bEnableMotion = true;
-	Scale = FVector::OneVector;
+	AxisAmplitude = FVector::OneVector;
 	Amplitude = 100;
 	Frequency = 0.5f;
 	TimeOffset = 0;
+	bRandomizeTimeOffset = true;
 	PositionOffset = FVector::ZeroVector;
 }
 
@@ -25,6 +26,11 @@ void UBABrownianMotionComponent::BeginPlay()
 
 	// Get Starting position
 	StartingPosition = GetOwner()->GetRootComponent()->GetRelativeLocation();
+
+	if (bRandomizeTimeOffset)
+	{
+		TimeOffset += FMath::RandRange(-10000, 0);
+	}
 }
 
 // Called every frame
@@ -35,7 +41,7 @@ void UBABrownianMotionComponent::TickComponent(float DeltaTime, ELevelTick TickT
 	// Apply Brownian Motion
 	if (bEnableMotion) {
 		FVector NewLocation = GetPerlinNoise3D(GetWorld()->GetTimeSeconds() + TimeOffset, Frequency);
-		NewLocation *= Scale * Amplitude;
+		NewLocation *= AxisAmplitude * Amplitude;
 		NewLocation += StartingPosition + PositionOffset;
 		GetOwner()->SetActorRelativeLocation(NewLocation);
 	}

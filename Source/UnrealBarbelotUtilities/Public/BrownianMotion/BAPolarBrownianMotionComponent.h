@@ -3,17 +3,17 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include "BABrownianMotionComponent.generated.h"
+#include "BAPolarBrownianMotionComponent.generated.h"
 
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class UNREALBARBELOTUTILITIES_API UBABrownianMotionComponent : public UActorComponent
+UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
+class UNREALBARBELOTUTILITIES_API UBAPolarBrownianMotionComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
-public:	
+public:
 	// Sets default values for this component's properties
-	UBABrownianMotionComponent();
+	UBAPolarBrownianMotionComponent();
 
 protected:
 	// Called when the game starts
@@ -24,7 +24,7 @@ protected:
 
 	FVector GetPerlinNoise3D(float Time, float Scale);
 
-public:	
+public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
@@ -38,7 +38,19 @@ public:
 	float Amplitude;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Interp, Category = "Brownian Motion|Amplitude")
-	FVector AxisAmplitude;
+	float RadiusAmplitude;
+
+	/* Set the theta and phi amplitudes in centimeters instead of degrees. Useful to get a smoother velocity at a fixed radius. */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Interp, Category = "Brownian Motion|Amplitude")
+	bool bUseArcLength;
+
+	/* Polar angle */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Interp, Category = "Brownian Motion|Amplitude")
+	float ThetaAmplitude;
+
+	/* Azimuthal angle */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Interp, Category = "Brownian Motion|Amplitude")
+	float PhiAmplitude;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Interp, Category = "Brownian Motion|Offset")
 	float TimeOffset;
@@ -49,4 +61,17 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Interp, Category = "Brownian Motion|Offset")
 	FVector PositionOffset;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Interp, Category = "Brownian Motion|Offset")
+	float RadiusOffset;
+
+	/* Polar angle offset in degrees */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Interp, Category = "Brownian Motion|Offset")
+	float ThetaOffset;
+
+	/* Azimuthal angle offset in degrees */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Interp, Category = "Brownian Motion|Offset")
+	float PhiOffset;
+
+
 };
