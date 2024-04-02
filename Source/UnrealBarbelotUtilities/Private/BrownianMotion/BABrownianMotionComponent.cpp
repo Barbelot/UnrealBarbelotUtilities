@@ -9,13 +9,28 @@ UBABrownianMotionComponent::UBABrownianMotionComponent()
 	PrimaryComponentTick.bCanEverTick = true;
 
 	// Default values
-	bEnableMotion = true;
-	AxisAmplitude = FVector::OneVector;
-	Amplitude = 100;
-	Frequency = 0.5f;
-	TimeOffset = 0;
-	bRandomizeTimeOffset = true;
+
+
+	bEnablePosition = true;
+	PositionAxisScale = FVector::OneVector;
+	PositionAmplitude = 100;
+	PositionFrequency = 0.5f;
 	PositionOffset = FVector::ZeroVector;
+	bRandomizePositionTimeOffset = true;
+	PositionTimeOffset = 0;
+
+	bAlignWithMovement = false;
+
+	bEnableRotation = false;
+	RotationFrequency = .5f;
+	RotationAmplitude = 360.0f;
+	RotationAxisScale = FVector::OneVector;
+	RotationOffset = FVector::ZeroVector;
+	bRandomizeRotationTimeOffset = true;
+	RotationTimeOffset = 0;
+
+	PositionTime = 0;
+	RotationTime = 0;
 }
 
 
@@ -24,13 +39,22 @@ void UBABrownianMotionComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// Get Starting position
+	// Get Starting transform
 	StartingPosition = GetOwner()->GetRootComponent()->GetRelativeLocation();
+	StartingRotation = GetOwner()->GetRootComponent()->GetRelativeRotation();
 
-	if (bRandomizeTimeOffset)
+	if (bRandomizePositionTimeOffset)
 	{
-		TimeOffset += FMath::RandRange(-10000, 0);
+		PositionTimeOffset += FMath::RandRange(-10000, 0);
 	}
+
+	if (bRandomizeRotationTimeOffset)
+	{
+		RotationTimeOffset += FMath::RandRange(-10000, 0);
+	}
+
+	PositionTime = PositionTimeOffset;
+	RotationTime = RotationTimeOffset;
 }
 
 // Called every frame
@@ -38,23 +62,55 @@ void UBABrownianMotionComponent::TickComponent(float DeltaTime, ELevelTick TickT
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	// Apply Brownian Motion
-	if (bEnableMotion) {
-		FVector NewLocation = GetPerlinNoise3D(GetWorld()->GetTimeSeconds() + TimeOffset, Frequency);
-		NewLocation *= AxisAmplitude * Amplitude;
+	PreviousPosition = GetOwner()->GetActorLocation();
+
+	// Apply position motion
+	if (bEnablePosition) {
+		PositionTime += DeltaTime * PositionFrequency;
+		FVector NewLocation = GetPerlinNoise3D(PositionTime);
+		NewLocation *= PositionAxisScale * PositionAmplitude;
 		NewLocation += StartingPosition + PositionOffset;
 		GetOwner()->SetActorRelativeLocation(NewLocation);
+	}
+
+	//Align with direction
+	if (bAlignWithMovement) {
+
+		FVector CurrentPosition = GetOwner()->GetActorLocation();
+
+		if (CurrentPosition != PreviousPosition) {
+			FVector CurrentDirection = CurrentPosition - PreviousPosition;
+			CurrentRotation = CurrentDirection.Rotation();
+
+			if (!bEnableRotation) {
+				GetOwner()->SetActorRotation(CurrentRotation);
+			}
+		}
+	}
+
+	//Apply rotation motion
+	if (bEnableRotation) {
+		RotationTime += DeltaTime * RotationFrequency;
+		FVector NewRotation = GetPerlinNoise3D(RotationTime);
+		NewRotation *= RotationAxisScale * RotationAmplitude;
+		NewRotation += RotationOffset;
+		if (bAlignWithMovement) {
+			GetOwner()->SetActorRotation(CurrentRotation + FRotator::MakeFromEuler(NewRotation));
+		}
+		else {
+			GetOwner()->SetActorRelativeRotation(StartingRotation + FRotator::MakeFromEuler(NewRotation));
+		}
 	}
 }
 
 // Get 3D perlin noise vector
-FVector UBABrownianMotionComponent::GetPerlinNoise3D(float Time, float NoiseFrequency)
+FVector UBABrownianMotionComponent::GetPerlinNoise3D(float Time)
 {
 	FVector NoiseValue;
 
-	NoiseValue.X = FMath::PerlinNoise1D(Time * NoiseFrequency);
-	NoiseValue.Y = FMath::PerlinNoise1D((Time + 11.0f) * NoiseFrequency);
-	NoiseValue.Z = FMath::PerlinNoise1D((Time + 37.0f) * NoiseFrequency);
+	NoiseValue.X = FMath::PerlinNoise1D(Time);
+	NoiseValue.Y = FMath::PerlinNoise1D((Time + 11.0f));
+	NoiseValue.Z = FMath::PerlinNoise1D((Time + 37.0f));
 
 	return NoiseValue;
 }
