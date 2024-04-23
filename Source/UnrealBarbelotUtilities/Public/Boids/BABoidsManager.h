@@ -20,6 +20,8 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	// List of boids spawned by the manager. If you add boids in this list, they will be handled by this manager at BeginPlay.
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawn")
 	TArray<TObjectPtr<ABABoid>> Boids;
 
 	void UpdateBoids(float DeltaTime);
@@ -37,11 +39,15 @@ public:
 
 	// Number of boids to spawn. Recommended below 100.
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Interp, Category = "Spawn", meta = (ClampMin = "0.0", ClampMax = "1000.0", UIMin = "0.0", UIMax = "1000.0"))
-	float SpawnCount;
+	int32 SpawnCount;
 
 	// Target actor attracting boids, useful to avoid boids going too far away.
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Target")
 	AActor* Target;
+
+	// Position of the target, only used if Target actor is not set.
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Target")
+	FVector TargetPosition;
 
 	// Weight of the force towards the target compared to the other forces.
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Interp, Category = "Target")

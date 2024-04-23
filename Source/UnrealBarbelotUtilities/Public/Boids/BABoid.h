@@ -66,7 +66,10 @@ public:
 	/*** METHODS ***/
 
 	UFUNCTION()
-	void InitializeBoid(FVector SpawnPosition, FRotator SpawnRotation);
+	void InitializeBoidFromPositionAndRotation(FVector SpawnPosition, FRotator SpawnRotation);
+
+	UFUNCTION()
+	void InitializeBoid();
 
 	UFUNCTION()
 	void UpdateBoid(float DeltaTime);

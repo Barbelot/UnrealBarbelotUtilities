@@ -24,13 +24,18 @@ ABABoid::ABABoid()
 	MovableRootComponent->SetMobility(EComponentMobility::Movable);
 }
 
-void ABABoid::InitializeBoid(FVector SpawnPosition, FRotator SpawnRotation)
+void ABABoid::InitializeBoidFromPositionAndRotation(FVector SpawnPosition, FRotator SpawnRotation)
+{
+	MovableRootComponent->SetRelativeLocation(SpawnPosition);
+	MovableRootComponent->SetRelativeRotation(SpawnRotation);
+
+	InitializeBoid();
+}
+
+void ABABoid::InitializeBoid() 
 {
 	if (ensureMsgf(BoidsManager, TEXT("Boids Manager not set. This should never happen."))) {
 		RandomValue = UKismetMathLibrary::RandomFloatInRange(0, 1);
-
-		MovableRootComponent->SetRelativeLocation(SpawnPosition);
-		MovableRootComponent->SetRelativeRotation(SpawnRotation);
 
 		const float StartingSpeed = (BoidsManager->SpeedMinMax.X + BoidsManager->SpeedMinMax.Y) * 0.5f;
 		Velocity = MovableRootComponent->GetForwardVector() * StartingSpeed;
@@ -47,23 +52,27 @@ void ABABoid::UpdateBoid(float DeltaTime)
 	const FVector Position = MovableRootComponent->GetComponentLocation();
 
 	//Move towards target
+
+	FVector TargetPosition = BoidsManager->TargetPosition;
+
 	if(BoidsManager->Target)
 	{
-		const FVector TargetPosition = BoidsManager->Target->GetActorLocation();
-		const FVector OffsetToTarget = TargetPosition - Position;
-
-		float TargetWeight = BoidsManager->TargetWeight;
-
-		//Target catchup (accelerate when too far away)
-		if(BoidsManager->TargetCatchupStrength > 0)
-		{
-			TargetWeight += UKismetMathLibrary::Lerp(0, BoidsManager->TargetCatchupStrength,
-				UKismetMathLibrary::NormalizeToRange(OffsetToTarget.Length(),
-					BoidsManager->targetCatchupRadiusMinMax.X, BoidsManager->targetCatchupRadiusMinMax.Y));
-		}
-
-		Acceleration = SteerTowards(OffsetToTarget) * TargetWeight;
+		TargetPosition = BoidsManager->Target->GetActorLocation();
 	}
+
+	const FVector OffsetToTarget = TargetPosition - Position;
+
+	float TargetWeight = BoidsManager->TargetWeight;
+
+	//Target catchup (accelerate when too far away)
+	if (BoidsManager->TargetCatchupStrength > 0)
+	{
+		TargetWeight += UKismetMathLibrary::Lerp(0, BoidsManager->TargetCatchupStrength,
+			UKismetMathLibrary::NormalizeToRange(OffsetToTarget.Length(),
+				BoidsManager->targetCatchupRadiusMinMax.X, BoidsManager->targetCatchupRadiusMinMax.Y));
+	}
+
+	Acceleration = SteerTowards(OffsetToTarget) * TargetWeight;
 
 	//Boid forces
 	if(NumPerceivedFlockmates > 0)
@@ -94,9 +103,9 @@ void ABABoid::UpdateBoid(float DeltaTime)
 	FVector NoiseValue;
 	const float Time = GetWorld()->GetTimeSeconds();
 
-	NoiseValue.X = UKismetMathLibrary::PerlinNoise1D(Time * BoidsManager->DirectionNoiseFrequency + RandomValue * 10);
-	NoiseValue.Y = UKismetMathLibrary::PerlinNoise1D(Time * BoidsManager->DirectionNoiseFrequency + RandomValue * 100);
-	NoiseValue.Z = UKismetMathLibrary::PerlinNoise1D(Time * BoidsManager->DirectionNoiseFrequency + RandomValue * 100);
+	NoiseValue.X = UKismetMathLibrary::PerlinNoise1D(Time * BoidsManager->DirectionNoiseFrequency + RandomValue * 7);
+	NoiseValue.Y = UKismetMathLibrary::PerlinNoise1D(Time * BoidsManager->DirectionNoiseFrequency + RandomValue * 19);
+	NoiseValue.Z = UKismetMathLibrary::PerlinNoise1D(Time * BoidsManager->DirectionNoiseFrequency + RandomValue * 37);
 	NoiseValue *= BoidsManager->DirectionNoiseIntensity;
 
 	Velocity += NoiseValue;
@@ -107,7 +116,7 @@ void ABABoid::UpdateBoid(float DeltaTime)
 	Speed = UKismetMathLibrary::Clamp(Speed, BoidsManager->SpeedMinMax.X, BoidsManager->SpeedMinMax.Y);
 
 	//Add speed noise
-	Speed += UKismetMathLibrary::PerlinNoise1D(Time * BoidsManager->SpeedNoiseFrequency + RandomValue * 10000) * BoidsManager->SpeedNoiseIntensity;
+	Speed += UKismetMathLibrary::PerlinNoise1D(Time * BoidsManager->SpeedNoiseFrequency + RandomValue * 1337) * BoidsManager->SpeedNoiseIntensity;
 
 	//Update velocity from speed
 	Velocity = Direction * Speed;

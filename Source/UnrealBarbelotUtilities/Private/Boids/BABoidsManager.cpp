@@ -15,11 +15,11 @@ ABABoidsManager::ABABoidsManager()
 	SpawnCount = 10;
 
 	SpeedMinMax = FVector2D(200, 500);
-	SpeedNoiseIntensity = 0;
+	SpeedNoiseIntensity = 5.0f;
 	SpeedNoiseFrequency = 1.0f;
 
-	DirectionNoiseIntensity = 0;
-	DirectionNoiseFrequency = 5.0f;
+	DirectionNoiseIntensity = 1.0f;
+	DirectionNoiseFrequency = 1.0f;
 
 	PerceptionRadius = 0;
 
@@ -41,6 +41,15 @@ ABABoidsManager::ABABoidsManager()
 void ABABoidsManager::BeginPlay()
 {
 	Super::BeginPlay();
+
+	//Initialize existing boids
+	for (int i = 0; i < Boids.Num(); i++) {
+		//TODO : Find a reliable way to handle null element in the list to avoid crashes
+		if (IsValid(Boids[i])) {
+			Boids[i]->BoidsManager = this;
+			Boids[i]->InitializeBoid();
+		}
+	}
 
 	//Spawn boids
 	for(int i=0; i<SpawnCount; i++)
@@ -87,7 +96,7 @@ void ABABoidsManager::SpawnBoidAtPosition(FVector Position)
 
 	const FRotator SpawnRotation = UKismetMathLibrary::RandomRotator(true);
 
-	NewBoid->InitializeBoid(Position, SpawnRotation);
+	NewBoid->InitializeBoidFromPositionAndRotation(Position, SpawnRotation);
 }
 
 void ABABoidsManager::RemoveBoid(int32 IndexToRemove)
