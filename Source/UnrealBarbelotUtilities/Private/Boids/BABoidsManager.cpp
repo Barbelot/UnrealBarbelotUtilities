@@ -30,6 +30,7 @@ ABABoidsManager::ABABoidsManager()
 	AvoidanceWeight = 1;
 
 	TargetWeight = 1;
+	TargetRadius = 0;
 	TargetCatchupStrength = 0;
 	targetCatchupRadiusMinMax = FVector2D(200, 400);
 	SnapToTarget = 0;

@@ -53,6 +53,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Interp, Category = "Target")
 	float TargetWeight;
 
+	// Weight of the force towards the target will decrease inside this radius.
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Interp, Category = "Target")
+	float TargetRadius;
+
 	// Strength of the catchup force that accelerate boids too far away from the target.
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Interp, Category = "Target")
 	float TargetCatchupStrength;

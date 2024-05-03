@@ -52,7 +52,6 @@ void ABABoid::UpdateBoid(float DeltaTime)
 	const FVector Position = MovableRootComponent->GetComponentLocation();
 
 	//Move towards target
-
 	FVector TargetPosition = BoidsManager->TargetPosition;
 
 	if(BoidsManager->Target)
@@ -60,7 +59,8 @@ void ABABoid::UpdateBoid(float DeltaTime)
 		TargetPosition = BoidsManager->Target->GetActorLocation();
 	}
 
-	const FVector OffsetToTarget = TargetPosition - Position;
+	const FVector TargetDirection = TargetPosition - Position;
+	const float TargetDistance = TargetDirection.Length();
 
 	float TargetWeight = BoidsManager->TargetWeight;
 
@@ -68,11 +68,18 @@ void ABABoid::UpdateBoid(float DeltaTime)
 	if (BoidsManager->TargetCatchupStrength > 0)
 	{
 		TargetWeight += UKismetMathLibrary::Lerp(0, BoidsManager->TargetCatchupStrength,
-			UKismetMathLibrary::NormalizeToRange(OffsetToTarget.Length(),
+			UKismetMathLibrary::NormalizeToRange(TargetDistance,
 				BoidsManager->targetCatchupRadiusMinMax.X, BoidsManager->targetCatchupRadiusMinMax.Y));
 	}
 
-	Acceleration = SteerTowards(OffsetToTarget) * TargetWeight;
+	//Target radius (reduce target attraction when getting too close)
+	if (BoidsManager->TargetRadius > 0)
+	{
+		TargetWeight = UKismetMathLibrary::Lerp(0, TargetWeight,
+			UKismetMathLibrary::NormalizeToRange(TargetDistance, 0, BoidsManager->TargetRadius));
+	}
+
+	Acceleration = SteerTowards(TargetDirection) * TargetWeight;
 
 	//Boid forces
 	if(NumPerceivedFlockmates > 0)
