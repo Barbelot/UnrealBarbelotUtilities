@@ -26,8 +26,8 @@ ABABoid::ABABoid()
 
 void ABABoid::InitializeBoidFromPositionAndRotation(FVector SpawnPosition, FRotator SpawnRotation)
 {
-	MovableRootComponent->SetRelativeLocation(SpawnPosition);
-	MovableRootComponent->SetRelativeRotation(SpawnRotation);
+	MovableRootComponent->SetWorldLocation(SpawnPosition);
+	MovableRootComponent->SetWorldRotation(SpawnRotation);
 
 	InitializeBoid();
 }
