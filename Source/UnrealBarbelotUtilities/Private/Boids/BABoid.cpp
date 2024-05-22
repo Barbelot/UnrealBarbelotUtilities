@@ -35,6 +35,7 @@ void ABABoid::InitializeBoidFromPositionAndRotation(FVector SpawnPosition, FRota
 void ABABoid::InitializeBoid() 
 {
 	if (ensureMsgf(BoidsManager, TEXT("Boids Manager not set. This should never happen."))) {
+
 		RandomValue = UKismetMathLibrary::RandomFloatInRange(0, 1);
 
 		const float StartingSpeed = (BoidsManager->SpeedMinMax.X + BoidsManager->SpeedMinMax.Y) * 0.5f;

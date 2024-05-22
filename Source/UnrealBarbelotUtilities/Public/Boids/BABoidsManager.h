@@ -35,7 +35,7 @@ public:
 
 	// Boids are spawned randomly around this object at distance below SpawnRadius.
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Interp, Category = "Spawn")
-	float SpawnRadius;
+	FVector2D SpawnRadiusMinMax;
 
 	// Number of boids to spawn. Recommended below 100.
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Interp, Category = "Spawn", meta = (ClampMin = "0.0", ClampMax = "1000.0", UIMin = "0.0", UIMax = "1000.0"))

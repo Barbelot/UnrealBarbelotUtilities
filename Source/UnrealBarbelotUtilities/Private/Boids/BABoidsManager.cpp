@@ -11,7 +11,7 @@ ABABoidsManager::ABABoidsManager()
 	PrimaryActorTick.bCanEverTick = true;
 
 	//Set default values
-	SpawnRadius = 1000;
+	SpawnRadiusMinMax = FVector2D(500,1000);
 	SpawnCount = 10;
 
 	SpeedMinMax = FVector2D(200, 500);
@@ -74,7 +74,7 @@ void ABABoidsManager::SpawnBoid()
 		return;
 	}
 
-	const FVector SpawnLocation = GetActorLocation() + UKismetMathLibrary::RandomUnitVector() * UKismetMathLibrary::RandomFloatInRange(0, SpawnRadius);
+	const FVector SpawnLocation = GetActorLocation() + UKismetMathLibrary::RandomUnitVector() * UKismetMathLibrary::RandomFloatInRange(SpawnRadiusMinMax.X, SpawnRadiusMinMax.Y);
 
 	SpawnBoidAtPosition(SpawnLocation);
 }
