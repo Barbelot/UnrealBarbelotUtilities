@@ -50,6 +50,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Boids")
 	float AdditionalVelocityIntensity;
 
+	//Speed multiplier
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Boids")
+	float SpeedMultiplier;
+
 	//Flock parameters
 	UPROPERTY(VisibleAnywhere, Category = "Boids")
 	FVector FlockDirection;

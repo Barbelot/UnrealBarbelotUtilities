@@ -13,6 +13,7 @@ ABABoid::ABABoid()
 	//Set default values
 	AdditionalVelocityDirection = FVector::ZeroVector;
 	AdditionalVelocityIntensity = 0;
+	SpeedMultiplier = 1;
 
 	//Create components
 	StaticRootComponent = CreateDefaultSubobject<USceneComponent>("StaticRootComponent");
@@ -121,7 +122,7 @@ void ABABoid::UpdateBoid(float DeltaTime)
 	//Compute speed
 	float Speed = Velocity.Length();
 	const FVector Direction = Velocity / Speed;
-	Speed = UKismetMathLibrary::Clamp(Speed, BoidsManager->SpeedMinMax.X, BoidsManager->SpeedMinMax.Y);
+	Speed = UKismetMathLibrary::Clamp(Speed, BoidsManager->SpeedMinMax.X, BoidsManager->SpeedMinMax.Y) * SpeedMultiplier;
 
 	//Add speed noise
 	Speed += UKismetMathLibrary::PerlinNoise1D(Time * BoidsManager->SpeedNoiseFrequency + RandomValue * 1337) * BoidsManager->SpeedNoiseIntensity;
@@ -136,9 +137,7 @@ void ABABoid::UpdateBoid(float DeltaTime)
 	MovableRootComponent->SetWorldRotation(Direction.Rotation());
 
 	//Snap to target
-	if (BoidsManager->Target) {
-		MovableRootComponent->SetWorldLocation(FMath::Lerp(MovableRootComponent->GetComponentLocation(), BoidsManager->Target->GetActorLocation(), BoidsManager->SnapToTarget));
-	}
+	MovableRootComponent->SetWorldLocation(FMath::Lerp(MovableRootComponent->GetComponentLocation(), TargetPosition, BoidsManager->SnapToTarget));
 
 	//AfterBoidUpdate event call
 	AfterBoidUpdate();
